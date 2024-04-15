@@ -1,0 +1,121 @@
+[gd_scene load_steps=17 format=3 uid="uid://cl2u6585cucvn"]
+
+[ext_resource type="Texture2D" uid="uid://qih2ubimxtjm" path="res://Assets/egg_1.png" id="1_4vxd0"]
+[ext_resource type="Script" path="res://egg.gd" id="1_h1y83"]
+[ext_resource type="Texture2D" uid="uid://oeo618mutg7i" path="res://Assets/tile_sheet_explosion.png" id="3_i86xx"]
+[ext_resource type="Script" path="res://Nodes/hurtbox.gd" id="4_bywso"]
+[ext_resource type="Script" path="res://Nodes/damage.gd" id="5_1plvd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryboc"]
+atlas = ExtResource("3_i86xx")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nb2q3"]
+atlas = ExtResource("3_i86xx")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqxhk"]
+atlas = ExtResource("3_i86xx")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ead1y"]
+atlas = ExtResource("3_i86xx")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8h3av"]
+atlas = ExtResource("3_i86xx")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_utrto"]
+atlas = ExtResource("3_i86xx")
+region = Rect2(512, 512, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xvtn3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4vxd0")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryboc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nb2q3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqxhk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ead1y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8h3av")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_utrto")
+}],
+"loop": false,
+"name": &"explosion",
+"speed": 16.0
+}]
+
+[sub_resource type="Animation" id="Animation_3ha50"]
+resource_name = "before_exploding"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.7, 0.7), Vector2(0.5, 0.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3poqc"]
+_data = {
+"before_exploding": SubResource("Animation_3ha50")
+}
+
+[sub_resource type="Resource" id="Resource_ck53j"]
+script = ExtResource("5_1plvd")
+amount = 25
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_emk6y"]
+radius = 199.462
+
+[node name="Egg" type="Node2D"]
+script = ExtResource("1_h1y83")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_xvtn3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_3poqc")
+}
+speed_scale = 1.5
+
+[node name="ExplosionTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="BeforePulse" type="Timer" parent="."]
+autostart = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("4_bywso")
+damage = SubResource("Resource_ck53j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_emk6y")

@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://3axi64x2a7ml"]
+
+[ext_resource type="Texture2D" uid="uid://m4sutkku8fw3" path="res://Assets/Characters/IMG_0856.PNG" id="1_c3m2y"]
+[ext_resource type="Script" path="res://chiken.gd" id="1_fru4b"]
+[ext_resource type="PackedScene" uid="uid://cl2u6585cucvn" path="res://egg.tscn" id="2_8dele"]
+
+[sub_resource type="Animation" id="Animation_20pbm"]
+resource_name = "chiken"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.9, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.139626, 3.48787e-16, -0.139626, 3.48787e-16]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7ue46"]
+_data = {
+"chiken": SubResource("Animation_20pbm")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1mm2"]
+radius = 38.0
+height = 96.0
+
+[node name="Chiken" type="RigidBody2D"]
+gravity_scale = 1.66533e-16
+lock_rotation = true
+linear_damp_mode = 1
+linear_damp = 4.0
+script = ExtResource("1_fru4b")
+egg = ExtResource("2_8dele")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_7ue46")
+}
+autoplay = "chiken"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 0.139626
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_c3m2y")
+offset = Vector2(2.08165e-12, -200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -45)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_j1mm2")
+
+[node name="EggCooldownTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="EggCooldownTimer" to="." method="_on_egg_cooldown_timer_timeout"]

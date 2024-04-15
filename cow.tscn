@@ -1,0 +1,84 @@
+[gd_scene load_steps=10 format=3 uid="uid://dcacb3oukynm1"]
+
+[ext_resource type="Script" path="res://cow.gd" id="1_au0mq"]
+[ext_resource type="Texture2D" uid="uid://cwc7lca85l4bm" path="res://Assets/Characters/IMG_0857.PNG" id="1_udxmi"]
+[ext_resource type="Script" path="res://Nodes/hurtbox.gd" id="3_lx7db"]
+[ext_resource type="Script" path="res://Nodes/damage.gd" id="4_l5tbt"]
+
+[sub_resource type="Animation" id="Animation_6ue0o"]
+resource_name = "new_animation"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.5, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [3.48787e-16, 0.139626, 3.48787e-16, -0.139626]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bfhmu"]
+_data = {
+"new_animation": SubResource("Animation_6ue0o")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_prd8k"]
+radius = 53.0
+height = 210.0
+
+[sub_resource type="Resource" id="Resource_3g40c"]
+script = ExtResource("4_l5tbt")
+amount = 20
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8mb6y"]
+radius = 34.0
+height = 94.0
+
+[node name="Cow" type="RigidBody2D"]
+lock_rotation = true
+linear_damp_mode = 1
+linear_damp = 4.0
+script = ExtResource("1_au0mq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Sprite2D")
+libraries = {
+"": SubResource("AnimationLibrary_bfhmu")
+}
+autoplay = "new_animation"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+rotation = -0.023271
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_udxmi")
+offset = Vector2(2.08165e-12, -200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(-3.86535e-12, -83)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_prd8k")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("3_lx7db")
+damage = SubResource("Resource_3g40c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(-75, -98)
+shape = SubResource("CapsuleShape2D_8mb6y")
+
+[node name="Attack" type="Timer" parent="."]
+
+[node name="AttackCooldown" type="Timer" parent="."]
+
+[connection signal="timeout" from="Attack" to="." method="_on_attack_timeout"]
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]

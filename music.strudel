@@ -1,0 +1,73 @@
+stack(
+    cat(
+        note("c g e ~"),
+        note("e g c ~"),
+        note("d b g ~"),
+        note("c g e ~"),
+        note("a c e ~"),
+        note("e g c ~"),
+        note("f a d ~"),
+        note("c g e ~"),
+        note("e g c ~"),
+        note("d b g ~"),
+        note("c g e ~"),
+        note("a c e ~"),
+        note("e g c ~"),
+        note("f a d ~"),
+
+        note("c g e ~"),
+        note("e g c ~"),
+        note("d b g ~"),
+        note("c g e ~"),
+        note("a c e ~"),
+        note("e g c ~"),
+        note("f a d ~"),
+        note("c g e ~"),
+        note("e g c ~"),
+        note("d b g ~"),
+        note("c g e ~"),
+        note("a c e ~"),
+        note("e g c ~"),
+        note("f a d ~"),
+    )
+        .sustain(1.5)
+        .release(.8)
+        .s('gm_banjo'),
+    cat(
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("c g e ~"),
+        note("e g c ~"),
+        note("d b g ~"),
+        note("a c e ~"),
+        note("e g c ~"),
+        note("d ~ ~ ~"),
+        note("f a d ~"),
+
+        note("c ~ ~ ~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("~"),
+        note("c g e ~"),
+        note("e g c ~"),
+        note("d b g ~"),
+        note("a c e ~"),
+        note("e g c ~"),
+        note("d ~ ~ ~"),
+        note("f a d ~"),
+    )
+        .attack(0.2)
+        .sustain(1)
+        .gain(0.7)
+        .n("1")
+        .s('gm_flute')
+)
+    .fast(1.5)

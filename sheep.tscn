@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://cqohv74om6vaq"]
+
+[ext_resource type="Script" path="res://sheep.gd" id="1_ootrc"]
+[ext_resource type="Texture2D" uid="uid://cdfuvelkrp0fk" path="res://Assets/Characters/IMG_0855.PNG" id="1_qowy4"]
+[ext_resource type="PackedScene" uid="uid://clm6xlxmgu6fn" path="res://bullet.tscn" id="2_qryt6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aa15a"]
+radius = 59.0
+height = 150.0
+
+[sub_resource type="Animation" id="Animation_sm2yo"]
+resource_name = "moving"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.139626, 0.0, -0.139626]
+}
+
+[sub_resource type="Animation" id="Animation_1efs8"]
+resource_name = "shooting"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.4, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.4, 0.4), Vector2(0.6, 0.6), Vector2(0.5, 0.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2hmak"]
+_data = {
+"moving": SubResource("Animation_sm2yo"),
+"shooting": SubResource("Animation_1efs8")
+}
+
+[node name="Sheep" type="RigidBody2D"]
+lock_rotation = true
+linear_damp = 4.0
+script = ExtResource("1_ootrc")
+bullet = ExtResource("2_qryt6")
+
+[node name="CenterMarker" type="Marker2D" parent="."]
+position = Vector2(2.08165e-12, -64)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_qowy4")
+offset = Vector2(2.08165e-12, -200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(-1.09139e-11, -65)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_aa15a")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2hmak")
+}
+autoplay = "moving"
+blend_times = [&"moving", &"moving", 0.5]
+
+[node name="ShootMarker_1" type="Marker2D" parent="."]
+position = Vector2(0, -126)
+
+[node name="ShootMarker_2" type="Marker2D" parent="."]
+
+[node name="ShootMarker_3" type="Marker2D" parent="."]
+position = Vector2(-61, -24)
+
+[node name="ShootMarker_4" type="Marker2D" parent="."]
+position = Vector2(-68, -99)
+
+[node name="ShootMarker_5" type="Marker2D" parent="."]
+position = Vector2(62, -26)
+
+[node name="ShootMarker_6" type="Marker2D" parent="."]
+position = Vector2(65, -102)
+
+[node name="ShootCooldown" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="AnimShootTime" type="Timer" parent="ShootCooldown"]
+wait_time = 0.34
+one_shot = true
