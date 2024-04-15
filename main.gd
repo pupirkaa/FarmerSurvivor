@@ -23,6 +23,10 @@ var level_xp:int = int((1.2**level)*12)
 var prev_xp: int =0
 var curr_xp: int=0
 
+func _physics_process(_delta):
+	if Input.is_action_just_pressed("cheat_xp"):
+		($Pausable/Player as Player).xp += 10
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for i in 3:
@@ -134,7 +138,7 @@ func _on_player_player_dead():
 	$Pausable.process_mode = Node.PROCESS_MODE_DISABLED
 	$CanvasLayer/GameOverUI/VBoxContainer/HBoxContainer/Label.text=String("Your score: %s" %curr_xp)
 	$CanvasLayer/GameOverUI.visible=true
-	
+
 	
 
 func _on_texture_button_pressed():

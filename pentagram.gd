@@ -51,7 +51,9 @@ func _on_area_entered(area):
 	hitbox=area
 
 
-func _on_area_exited(_area):
+func _on_area_exited(area):
+	if not area.get_parent() is Player:
+		return
 	is_player_in_area = false
 	bar.visible = false
 	standing_timer.stop()
